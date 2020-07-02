@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
-import ImageTile from './components/ImageTile'
+import ImageTile from './components/ImageTile';
+import imageData from './imageData';
 import './App.css';
 
 /*function App() {
@@ -32,12 +33,15 @@ function App() {
     justifyContent: "center"
   };
 
+  const imageDataComponent = imageData.map((item) => {
+    return (
+      <ImageTile imgUrl = {item.imgUrl} name = {item.name} />
+    )
+  });
+
   return (
     <div className = "flex-container" style = {styles}>
-      <ImageTile imgUrl = "https://upload.wikimedia.org/wikipedia/en/thumb/0/07/Codeforces_logo.png/250px-Codeforces_logo.png" name = "Aakash"/>
-      <ImageTile imgUrl = "https://upload.wikimedia.org/wikipedia/en/thumb/0/07/Codeforces_logo.png/250px-Codeforces_logo.png" name = "Aakash"/>
-      <ImageTile imgUrl = "https://upload.wikimedia.org/wikipedia/en/thumb/0/07/Codeforces_logo.png/250px-Codeforces_logo.png" name = "Aakash"/>
-      <ImageTile imgUrl = "https://upload.wikimedia.org/wikipedia/en/thumb/0/07/Codeforces_logo.png/250px-Codeforces_logo.png" name = "Aakash"/>
+      {imageDataComponent}
     </div>
   );
 }
