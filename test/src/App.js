@@ -1,49 +1,54 @@
 import React from 'react';
 import logo from './logo.svg';
-import ImageTile from './components/ImageTile';
-import imageData from './imageData';
+import ImageGrid from './components/ImageGrid';
 import './App.css';
 
-/*function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}*/
+class App extends React.Component {
+  
+  constructor() {
+    super()
+    this.state = {
+      isLoading: false,
+      isClicked: false,
+      data: []
+    }
+    this.handleClick = this.handleClick.bind(this)
+  }
 
-function App() {
-  const styles = {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center"
-  };
+  componentDidMount() {
+      fetch('http://localhost:5000/fetchImageData')
+          .then(response => response.json())
+          .then(data => {
+              this.setState({
+                data: data
+              })
+          })
+          .catch(error => console.log(error));
+  }
 
-  const imageDataComponent = imageData.map((item) => {
+  handleClick () {
+      this.setState({
+        isLoading: true,
+        isClicked: false
+      })
+      setTimeout(() => {
+          this.setState({
+            isLoading: false,
+            isClicked: true
+          })
+      }, 1500)
+  }
+
+  render() {
     return (
-      <ImageTile imgUrl = {item.imgUrl} name = {item.name} />
+      <div className="flex-container">
+          <button onClick = {this.handleClick} className = "loadMoreButton"> Load Images </button>    
+          {
+            this.state.isClicked ? <ImageGrid data = {this.state.data}/> : (this.state.isLoading && <p>Fetching from API...</p>)
+          }
+      </div>
     )
-  });
-
-  return (
-    <div className = "flex-container" style = {styles}>
-      {imageDataComponent}
-    </div>
-  );
+  }
 }
 
 export default App;
